@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """First endpoint for API stats"""
-from flask import Flask
+from flask import Flask, jsonify
 from models import storage
 from api.v1.views import app_views
 from os import getenv
@@ -13,6 +13,12 @@ app.register_blueprint(app_views)
 def teardown_db(close):
     """ Removes current storage"""
     storage.close()
+
+
+# the 404 handler
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({"error": "Not found"}), 404
 
 
 # Setup the host and port to either env values or defaults
