@@ -19,4 +19,4 @@ def specific_state_getter(id):
     specific_state = storage.get(State, id)
     if specific_state is None:
         abort(404)
-    return
+    return jsonify(specific_state.to_dict())
