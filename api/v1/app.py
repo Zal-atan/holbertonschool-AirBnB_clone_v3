@@ -14,6 +14,7 @@ def teardown_db(close):
     """ Removes current storage"""
     storage.close()
 
+
 # Setup the host and port to either env values or defaults
 host = getenv("HBNB_API_HOST", default="0.0.0.0")
 port = getenv("HBNB_API_PORT", default="5000")
