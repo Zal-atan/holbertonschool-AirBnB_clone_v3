@@ -51,7 +51,7 @@ def create_state():
 
 @app_views.route("states/<id>", methods=["PUT"], strict_slashes=False)
 def update_state(id):
-    """ Updates a specific state """
+    """ Updates a specific State object"""
     get_dict = request.get_json(silent=True)
     if get_dict is None:
         return make_response(jsonify({"error": "Not a JSON"}), 400)
