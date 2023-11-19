@@ -33,7 +33,7 @@ def specific_review_getter(review_id):
 @app_views.route(
         '/reviews/<review_id>', methods=["DELETE"], strict_slashes=False)
 def review_deleter(review_id):
-    """ Deletes a specific Rdeview object """
+    """ Deletes a specific Review object """
     specific_review = storage.get(Review, review_id)
     if specific_review is None:
         abort(404)
