@@ -1,4 +1,4 @@
-#!/user/bin/python3
+#!/usr/bin/python3
 """ Review API calls module """
 
 from api.v1.views import app_views
