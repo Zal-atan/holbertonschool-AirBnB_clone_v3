@@ -56,7 +56,7 @@ def place_creator(city_id):
         abort(400, "Missing user_id")
     if "name" not in request_data:
         abort(400, "Missing name")
-    user = storage.get(User, request_data["user.id"])
+    user = storage.get(User, request_data["user_id"])
     if user is None:
         abort(404)
     new_place = Place(
