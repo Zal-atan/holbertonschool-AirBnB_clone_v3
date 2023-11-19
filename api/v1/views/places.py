@@ -49,16 +49,22 @@ def place_creator(city_id):
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
-    request_data = request.get_json()
-    if request_data is None:
-        abort(400, "Not a JSON")
-    if "user_id" not in request_data:
-        abort(400, "Missing user_id")
-    if "name" not in request_data:
-        abort(400, "Missing name")
+
+    # Checking to see if request data is a valid JSON
+    try:
+        request_data = request.get_json()
+    except Exception as e:
+        abort(400, f"Invalid JSON: {str(e)}")
+
+    #  Check if user_id & name are present in request data
+    if not request_data or "user_id" not in request_data \
+            or "name" not in request_data:
+        abort(400, "Missing 'user_id' or 'name' in request data")
+
     user = storage.get(User, request_data["user_id"])
     if user is None:
         abort(404)
+
     new_place = Place(
         city_id=city_id, user_id=request_data["user_id"], **request_data)
     storage.new(new_place)
