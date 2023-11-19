@@ -7,7 +7,7 @@ from models import storage
 from models.amenity import User
 
 
-@app_views.route('/amenities', methods=["GET"], strict_slashes=False)
+@app_views.route('/users', methods=["GET"], strict_slashes=False)
 def user_getter():
     """ List all User objects """
     list_users = [user.to_dict() for user in storage.all(
@@ -18,7 +18,7 @@ def user_getter():
 @app_views.route(
         '/users/<user_id>', methods=["GET"], strict_slashes=False)
 def specific_user_getter(user_id):
-    """ Retrieves data oof a specific AAmenity from ID """
+    """ Retrieves data oof a specific User from ID """
     specific_user = storage.get(User, user_id)
     if specific_user is None:
         abort(404)
@@ -55,7 +55,7 @@ def user_creator():
 
 @app_views.route(
         '/users/<user_id>', methods=["PUT"], strict_slashes=False)
-def user_updates(user_id):
+def user_updater(user_id):
     """ Updates a specific User object """
     specific_user = storage.get(User, user_id)
     if specific_user is None:
