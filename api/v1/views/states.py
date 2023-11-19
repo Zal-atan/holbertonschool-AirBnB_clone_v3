@@ -13,6 +13,7 @@ def state_getter():
     list_states = [state.to_dict() for state in storage.all(State).values()]
     return jsonify(list_states)
 
+
 @app_views.route('/states/<id>', methods=["GET"], strict_slashes=False)
 def specific_state_getter(id):
     """Retrieves the data of a specific state from the given ID"""
