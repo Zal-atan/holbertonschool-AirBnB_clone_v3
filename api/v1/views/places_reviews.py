@@ -2,7 +2,7 @@
 """ Review API calls module """
 
 from api.v1.views import app_views
-from flask import jsonify, abort, request
+from flask import jsonify, abort, request, make_response
 from models import storage
 from models.review import Review
 from models.place import Place
@@ -51,7 +51,7 @@ def review_creator(place_id):
     place = storage.get(Place, place_id)
     if place is None:
         abort(404)
-    request_data = request.get_json()
+    request_data = request.get_json(silent=True)
     if request_data is None:
         abort(400, "Not a JSON")
     if "user_id" not in request_data:
@@ -61,11 +61,11 @@ def review_creator(place_id):
     user = storage.get(User, request_data["user_id"])
     if user is None:
         abort(404)
-    new_review = Review(
-        place_id=place_id, user_id=request_data["user_id"], **request_data)
-    storage.new(new_review)
+    request_data["place_id"] = place_id
+    new_review = Review(**request_data)
+    # storage.new(new_review)
     storage.save()
-    return jsonify(new_review.to_dict()), 201
+    return make_response(jsonify(new_review.to_dict()), 201)
 
 
 @app_views.route(

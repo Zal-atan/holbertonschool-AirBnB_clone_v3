@@ -2,7 +2,7 @@
 """ User API calls module """
 
 from api.v1.views import app_views
-from flask import jsonify, abort, request
+from flask import jsonify, abort, request, make_response
 from models import storage
 from models.place import Place
 from models.city import City
@@ -46,30 +46,42 @@ def place_deleter(place_id):
         '/cities/<city_id>/places', methods=["POST"], strict_slashes=False)
 def place_creator(city_id):
     """ Creates a new Place """
+    print("Getting Here 1")
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
-
+    print("Getting Here 2")
     # Checking to see if request data is a valid JSON
-    try:
-        request_data = request.get_json()
-    except Exception as e:
-        abort(400, f"Invalid JSON: {str(e)}")
-
-    #  Check if user_id & name are present in request data
-    if not request_data or "user_id" not in request_data \
-            or "name" not in request_data:
-        abort(400, "Missing 'user_id' or 'name' in request data")
+    # try:
+    #     request_data = request.get_json()
+    # except Exception as e:
+    #     abort(400, f"Invalid JSON: {str(e)}")
+    request_data = request.get_json(silent=True)
+    print("Getting Here 3")
+    if request_data is None:
+        return abort(400, jsonify({"error": "Not a JSON"}))
+    print("Getting Here 4")
+    if "user_id" not in request_data:
+        abort(400, jsonify({"error": "Missing user_id"}))
+    print("Getting Here 5")
+    # #  Check if user_id & name are present in request data
+    # if not request_data or "user_id" not in request_data \
+    #         or "name" not in request_data:
+    #     abort(400, "Missing 'user_id' or 'name' in request data")
 
     user = storage.get(User, request_data["user_id"])
     if user is None:
         abort(404)
-
-    new_place = Place(
-        city_id=city_id, user_id=request_data["user_id"], **request_data)
-    storage.new(new_place)
+    print("Getting Here 6")
+    if "name" not in request_data:
+        abort(400, jsonify({"error": "Missing name"}))
+    print("Getting Here 7")
+    request_data["city_id"] = city_id
+    print(request_data)
+    new_place = Place(**request_data)
+    # storage.new(new_place)
     storage.save()
-    return jsonify(new_place.to_dict()), 201
+    return make_response(jsonify(new_place.to_dict()), 201)
 
 
 @app_views.route(
