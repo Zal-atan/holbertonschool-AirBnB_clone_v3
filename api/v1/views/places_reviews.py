@@ -20,7 +20,6 @@ def reviews_getter(place_id):
     # Check if the place has reviews
     if not place.reviews:
         abort(404, "Place without reviews not found")
-
     list_reviews = [review.to_dict() for review in place.reviews]
     return jsonify(list_reviews)
 
