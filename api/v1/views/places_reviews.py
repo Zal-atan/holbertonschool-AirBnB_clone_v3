@@ -10,7 +10,7 @@ from models.user import User
 
 
 @app_views.route(
-        '/places/<place_id>/reviews', methods=["GET"], strict_slashes=False)
+    '/places/<place_id>/reviews', methods=["GET"], strict_slashes=False)
 def reviews_getter(place_id):
     """ List all Review objects of a Place """
     place = storage.get(Place, place_id)
@@ -20,13 +20,13 @@ def reviews_getter(place_id):
     # Check if the place has reviews
     if not place.reviews:
         abort(404, "Place without reviews not found")
-        
+
     list_reviews = [review.to_dict() for review in place.reviews]
     return jsonify(list_reviews)
 
 
 @app_views.route(
-        '/reviews/<review_id>', methods=["GET"], strict_slashes=False)
+    '/reviews/<review_id>', methods=["GET"], strict_slashes=False)
 def specific_review_getter(review_id):
     """ Retrieves data of a specific Review from ID """
     specific_review = storage.get(Review, review_id)
@@ -36,7 +36,7 @@ def specific_review_getter(review_id):
 
 
 @app_views.route(
-        '/reviews/<review_id>', methods=["DELETE"], strict_slashes=False)
+    '/reviews/<review_id>', methods=["DELETE"], strict_slashes=False)
 def review_deleter(review_id):
     """ Deletes a specific Review object """
     specific_review = storage.get(Review, review_id)
@@ -48,7 +48,7 @@ def review_deleter(review_id):
 
 
 @app_views.route(
-        '/places/<place_id>/reviews', methods=["POST"], strict_slashes=False)
+    '/places/<place_id>/reviews', methods=["POST"], strict_slashes=False)
 def review_creator(place_id):
     """ Creates a new Review """
     place = storage.get(Place, place_id)
@@ -72,7 +72,7 @@ def review_creator(place_id):
 
 
 @app_views.route(
-        '/reviews/<review_id>', methods=["PUT"], strict_slashes=False)
+    '/reviews/<review_id>', methods=["PUT"], strict_slashes=False)
 def review_updater(review_id):
     """ Updates a specific Review object """
     specific_review = storage.get(Review, review_id)
