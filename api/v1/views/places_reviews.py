@@ -15,11 +15,9 @@ def reviews_getter(place_id):
     """ List all Review objects of a Place """
     place = storage.get(Place, place_id)
     if place is None:
-        abort(404, "Place not found")
-
-    # Check if the place has reviews
-    if not place.reviews:
-        abort(404, "Place without reviews not found")
+        abort(404)
+    if place is None:
+        abort(404)
     list_reviews = [review.to_dict() for review in place.reviews]
     return jsonify(list_reviews)
 
